@@ -3,6 +3,7 @@
 namespace App\Livewire\Auth;
 
 use App\Models\User;
+use App\Providers\RouteServiceProvider;
 use Livewire\Component;
 
 class Register extends Component
@@ -37,5 +38,7 @@ class Register extends Component
         ]);
 
         auth()->login($user);
+
+        $this->redirect(RouteServiceProvider::HOME);
     }
 }
