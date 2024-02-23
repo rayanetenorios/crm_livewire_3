@@ -16,11 +16,10 @@ it('should be able to register a new user in the system', function () {
         ->set('password', 'password')
         ->call('submit')
         ->assertHasNoErrors();
+
+    $this->assertDatabaseCount('users', 1);
+    $this->assertDatabaseHas( 'users', [
+        'name' => 'Joe Doe',
+        'email' => 'joe@doe.com',
+    ]);
 });
-
-it('has user')->assertDatabaseHas( 'users', [
-    'name' => 'Joe Doe',
-    'email' => 'joe@doe.com',
-]);
-
-it('unique user')->assertDatabaseCount('users', 1);
