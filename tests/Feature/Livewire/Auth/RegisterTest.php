@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Auth\Register;
+use App\Models\User;
 use Livewire\Livewire;
 
 it('renders successfully', function () {
@@ -17,9 +18,21 @@ it('should be able to register a new user in the system', function () {
         ->call('submit')
         ->assertHasNoErrors();
 
-    $this->assertDatabaseCount('users', 1);
     $this->assertDatabaseHas( 'users', [
         'name' => 'Joe Doe',
         'email' => 'joe@doe.com',
     ]);
+
+    $this->assertDatabaseCount('users', 1);
+
+    $this->expect(auth()->check())
+        ->and(auth()->user())
+        ->id->toBe(User::first()->id);
 });
+
+test('required fields', function ($field) {
+    Livewire::test(Register::class)
+        ->set($field, '')
+        ->call('submit')
+        ->assertHasErrors([$field => 'required']);
+})->with(['name', 'email', 'password']);
