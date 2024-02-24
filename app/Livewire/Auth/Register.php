@@ -3,6 +3,7 @@
 namespace App\Livewire\Auth;
 
 use App\Models\User;
+use App\Notifications\WelcomeNotification;
 use App\Providers\RouteServiceProvider;
 use Livewire\Component;
 
@@ -23,7 +24,7 @@ class Register extends Component
     {
         return [
             'name' => ['required', ' max:255'],
-            'email' => 'required',
+            'email' => ['required', 'unique:users,email'],
             'password' => 'required',
         ];
     }
@@ -39,6 +40,8 @@ class Register extends Component
         ]);
 
         auth()->login($user);
+
+        $user->notify(new WelcomeNotification());
 
         $this->redirect(RouteServiceProvider::HOME);
     }
