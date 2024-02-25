@@ -8,7 +8,9 @@ class Logout extends Component
 {
     public function render()
     {
-        return view('livewire.auth.logout');
+        return <<<BLADE
+            <x-button icon="o-power" class="btn-circle btn-ghost btn-xs" tooltip-left="logoff" wire:click="logout" />
+        BLADE;
     }
 
     public function logout()
